@@ -1,0 +1,24 @@
+name: ci
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      # CI-only values: the database is a throwaway container, the secret guards nothing real.
+      DATABASE_URL: postgresql://app:app@localhost:5437/app
+      VAPI_SECRET: ci-only-not-a-secret
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10
+      - run: uv sync --frozen
+      - run: uv run ruff check .
+      - name: start Postgres (applies db/init/20_app_schema.sql)
+        run: docker compose up -d --wait db
+      - name: unit, database and concurrency tests
+        run: uv run pytest -q
+      - name: call-scenario eval (starts the app itself, clock frozen)
+        run: uv run python -m evals.run --start-server
+      - name: app log, if anything failed
+        if: failure()
+        run: cat evals/server.log || true

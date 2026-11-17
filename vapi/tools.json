@@ -1,0 +1,141 @@
+[
+  {
+    "type": "function",
+    "function": {
+      "name": "check_availability",
+      "description": "Check whether a day, or an exact time, is open. Returns open times, or the nearest alternatives when the time is taken or the shop is closed.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "when": {
+            "description": "The caller's own words for the day and time, e.g. 'next Tuesday at 2pm' or 'tomorrow morning'. Pass them unchanged; never work out a date yourself.",
+            "type": "string"
+          },
+          "mechanic": {
+            "default": "",
+            "description": "Dana, Luis or Priya, only if the caller asked for one. Empty means anyone.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "when"
+        ]
+      }
+    },
+    "server": {
+      "url": "https://YOUR-TUNNEL-HOST/vapi/tool-calls",
+      "credentialId": "YOUR-BEARER-CREDENTIAL-ID"
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "create_booking",
+      "description": "Book an appointment. Only call this after reading the day, time and mechanic back to the caller and hearing them say yes.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "when": {
+            "description": "The caller's own words for the day and time, e.g. 'next Tuesday at 2pm' or 'tomorrow morning'. Pass them unchanged; never work out a date yourself.",
+            "type": "string"
+          },
+          "mechanic": {
+            "default": "",
+            "description": "Dana, Luis or Priya, only if the caller asked for one. Empty means anyone.",
+            "type": "string"
+          },
+          "email": {
+            "default": "",
+            "description": "Email address for the confirmation, if the caller gave one. Empty if not.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "when"
+        ]
+      }
+    },
+    "server": {
+      "url": "https://YOUR-TUNNEL-HOST/vapi/tool-calls",
+      "credentialId": "YOUR-BEARER-CREDENTIAL-ID"
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "reschedule",
+      "description": "Move the caller's existing appointment to a new time. Read the new day and time back to the caller first.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "when": {
+            "description": "The NEW day and time, in the caller's own words.",
+            "type": "string"
+          },
+          "booking_id": {
+            "default": 0,
+            "description": "The booking number, if the caller knows it or a previous answer gave it. 0 if not.",
+            "type": "integer"
+          },
+          "mechanic": {
+            "default": "",
+            "description": "Dana, Luis or Priya, only if the caller asked for one. Empty means anyone.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "when"
+        ]
+      }
+    },
+    "server": {
+      "url": "https://YOUR-TUNNEL-HOST/vapi/tool-calls",
+      "credentialId": "YOUR-BEARER-CREDENTIAL-ID"
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "cancel",
+      "description": "Cancel the caller's appointment. Confirm with the caller first.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "booking_id": {
+            "default": 0,
+            "description": "The booking number, if the caller knows it or a previous answer gave it. 0 if not.",
+            "type": "integer"
+          }
+        },
+        "required": []
+      }
+    },
+    "server": {
+      "url": "https://YOUR-TUNNEL-HOST/vapi/tool-calls",
+      "credentialId": "YOUR-BEARER-CREDENTIAL-ID"
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "request_callback",
+      "description": "Ask a staff member to call the caller back: they want a person, need something these tools can't do, or a tool failed.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "description": "One sentence on what the caller needs.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "reason"
+        ]
+      }
+    },
+    "server": {
+      "url": "https://YOUR-TUNNEL-HOST/vapi/tool-calls",
+      "credentialId": "YOUR-BEARER-CREDENTIAL-ID"
+    }
+  }
+]
