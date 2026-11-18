@@ -252,7 +252,7 @@ A `retell.py` would map `name` and `args` onto the same `dispatch()` and return 
 - **Narrow model of a shop:** one shop, one time zone, fixed one-hour slots, and no service durations or mechanic skills.
 - **The date parser is regex-based English.** It needs digits ("3pm", not "three pm") and covers the phrasings in `tests/test_dates.py`, not every way people say dates.
 - **No demo video yet.**
-- **Unverified:** the GitHub Actions workflow hasn't run on GitHub (its steps were run locally), and the Docker app image build hasn't been tried.
+- **Unverified:** the Docker app image build hasn't been tried. (The GitHub Actions workflow passes on GitHub: ruff, 98 tests and the 30 call scenarios.)
 - **One database connection per request.** It's fine at this scale; a pool would be the next step.
 - **`make test` and `make eval` wipe the booking tables** of whatever database `DATABASE_URL` points at. Only point them at a dev database.
 
